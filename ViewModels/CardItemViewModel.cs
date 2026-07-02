@@ -5,7 +5,9 @@ namespace ASTEM_DB.ViewModels
     public class CardItemViewModel : ViewModelBase
     {
         private string _id = string.Empty;
+        private int _boardId;
         private Avalonia.Media.Imaging.Bitmap _image = null!;
+        private Avalonia.Media.Imaging.Bitmap? _boardImage;
         private string _glazeType = string.Empty;
         private string _glazeTypeString = string.Empty;
         private double _colorL;
@@ -27,6 +29,11 @@ namespace ASTEM_DB.ViewModels
             get => _id;
             set => this.RaiseAndSetIfChanged(ref _id, value);
         }
+        public int BoardID
+        {
+            get => _boardId;
+            set => this.RaiseAndSetIfChanged(ref _boardId, value);
+        }
         public string ImagePath
         {
             get => _imagePath;
@@ -37,6 +44,12 @@ namespace ASTEM_DB.ViewModels
         {
             get => _image;
             set => this.RaiseAndSetIfChanged(ref _image, value);
+        }
+
+        public Avalonia.Media.Imaging.Bitmap? BoardImage
+        {
+            get => _boardImage;
+            set => this.RaiseAndSetIfChanged(ref _boardImage, value);
         }
 
         public string GlazeType

@@ -1,12 +1,17 @@
-﻿using ASTEM_DB.Services;
-using ReactiveUI;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using ASTEM_DB.Resources.Languages;
+using ASTEM_DB.Services;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Media;
 using ColorMine.ColorSpaces;
 using ColorMine.ColorSpaces.Comparisons;
-using Avalonia.Media;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 // using System.Diagnostics;
@@ -67,7 +72,16 @@ namespace ASTEM_DB.ViewModels
             {
                 this.RaiseAndSetIfChanged(ref _selectedCard, value);
                 IsSidebarVisible = value != null;
+                if (value != null && value.BoardImage == null)
+                {
+                    _ = LoadBoardImageAsync(value);
+                }
             }
+        }
+
+        private async Task LoadBoardImageAsync(CardItemViewModel card)
+        {
+            card.BoardImage = await _db.GetBoardImageByIdAsync(card.BoardID);
         }
 
         private bool _sortByNameChecked;
@@ -184,6 +198,11 @@ namespace ASTEM_DB.ViewModels
             }
         }
 
+        public void SwitchLanguage()
+        {
+
+        }
+
         private bool _isFilterEmpty;
         public bool IsFilterEmpty
         {
@@ -222,7 +241,7 @@ namespace ASTEM_DB.ViewModels
                 {
                     return item.ColorName == SelectedColorPalette;
                 }
-                else if (!FilterByColor)
+                else if (!FilterBySpectrum)
                 {
                     return true;
                 }
@@ -314,13 +333,13 @@ namespace ASTEM_DB.ViewModels
             BlueYellow = lab.B;
         }
 
-        private bool _filterByColor = true;
-        public bool FilterByColor
+        private bool _filterBySpectrum = true;
+        public bool FilterBySpectrum
         {
-            get => _filterByColor;
+            get => _filterBySpectrum;
             set
             {
-                this.RaiseAndSetIfChanged(ref _filterByColor, value);
+                this.RaiseAndSetIfChanged(ref _filterBySpectrum, value);
             }
         }
 

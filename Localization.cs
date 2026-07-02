@@ -11,6 +11,8 @@ public static class Localization
         = new ResourceManager("ASTEM_DB.Resources.Strings", typeof(Localization).Assembly);
 }
 
+
+
 public class L10n : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

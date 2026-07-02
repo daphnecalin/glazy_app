@@ -2,6 +2,8 @@ using ASTEM_DB.ViewModels;
 using Avalonia;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using ColorMine.ColorSpaces;
+using DynamicData;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -192,6 +194,7 @@ namespace ASTEM_DB.Services
             string query = $@"
         SELECT 
             tp.ID,
+            tp.BoardID,
             tp.Color_L,
             tp.Color_A,
             tp.Color_B,
@@ -218,6 +221,7 @@ namespace ASTEM_DB.Services
                 items.Add(new CardItemViewModel
                 {
                     Id = reader["ID"].ToString()!,
+                    BoardID = Convert.ToInt32(reader["BoardID"]),
                     GlazeType = reader["GlazeType"].ToString() ?? "Unknown",
                     SurfaceCondition = reader["SurfaceCondition"].ToString() ?? "Unknown",
                     ColorL = Convert.ToDouble(reader["Color_L"]),
@@ -233,6 +237,26 @@ namespace ASTEM_DB.Services
             return items;
         }
 
+        public async Task<Avalonia.Media.Imaging.Bitmap?> GetBoardImageByIdAsync(int boardId)
+        {
+            await using var conn = new MySqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            string query = "SELECT Image FROM tileboard WHERE ID = @Id LIMIT 1";
+            await using var cmd = new MySqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Id", boardId);
+
+            await using var reader = await cmd.ExecuteReaderAsync();
+            if (await reader.ReadAsync())
+            {
+                if (reader["Image"] is byte[] imageBytes && imageBytes.Length > 0)
+                {
+                    using var memoryStream = new MemoryStream(imageBytes);
+                    return new Avalonia.Media.Imaging.Bitmap(memoryStream);
+                }
+            }
+            return null;
+        }
         public async Task<Avalonia.Media.Imaging.Bitmap?> GetImageByIdAsync(string id)
         {
             await using var conn = new MySqlConnection(_connectionString);
@@ -249,7 +273,7 @@ namespace ASTEM_DB.Services
                 {
                     using var memoryStream = new MemoryStream(imageBytes);
                     return new Avalonia.Media.Imaging.Bitmap(memoryStream);
-                }
+            }
             }
             return null;
         }

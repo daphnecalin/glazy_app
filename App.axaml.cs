@@ -1,8 +1,11 @@
+using ASTEM_DB.Resources.Languages;
+using ASTEM_DB.ViewModels;
+using ASTEM_DB.Views;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using ASTEM_DB.ViewModels;
-using ASTEM_DB.Views;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace ASTEM_DB
 {
@@ -15,6 +18,7 @@ namespace ASTEM_DB
 
         public override void OnFrameworkInitializationCompleted()
         {
+            Resource.Culture = new CultureInfo("ja");
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow

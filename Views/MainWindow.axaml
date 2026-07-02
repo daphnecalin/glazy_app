@@ -2,7 +2,8 @@
     x:Class="ASTEM_DB.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:color="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.ColorPicker"
+    xmlns:color="clr-namespace:Avalonia.Controls.Primitives;assembly=Avalonia.Controls.ColorPicker"
+	xmlns:lang="clr-namespace:ASTEM_DB.Resources.Languages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:ASTEM_DB.ViewModels"
@@ -26,57 +27,85 @@
             BorderBrush="#F0F0F0"
             BorderThickness="0,0,1,0"
             CornerRadius="0">
+			<Grid>
             <TabControl Margin="10" SelectedIndex="0">
                 <TabItem
                     FontSize="20"
                     FontWeight="DemiBold"
-                    Header="Glaze Search">
+                    Header="{x:Static lang:Resource.GlazeSearch}">
                     <ScrollViewer Margin="0,30,0,0" VerticalScrollBarVisibility="Auto">
                         <StackPanel Margin="10" Spacing="5">
-                            <color:ColorView
-                                Margin="0,-10,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                IsAlphaVisible="False"
-                                IsColorComponentsVisible="False"
-                                IsColorModelVisible="False"
-                                IsColorPaletteVisible="False"
-                                IsColorPreviewVisible="True"
-                                IsColorSpectrumVisible="True"
-                                IsComponentSliderVisible="False"
-                                Color="{Binding SelectedColor, Mode=TwoWay}" />
+                            <Grid
+							  IsVisible="{Binding FilterBySpectrum}"
+                              Margin="0,-10,0,0"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              ColumnDefinitions="24,256">
 
+                                <color:ColorSlider x:Name="HueSlider"
+                                    Grid.Column="0"
+                                    Width="24"
+                                    VerticalAlignment="Stretch"
+                                    Orientation="Vertical"
+                                    ColorModel="Hsva"
+                                    ColorComponent="Component1"
+                                    IsAlphaVisible="False"
+                                    HsvColor="{Binding #Spectrum.HsvColor, Mode=TwoWay}" />
+
+                                <color:ColorSpectrum x:Name="Spectrum"
+                                    Grid.Column="1"
+                                    Width="256"
+                                    Height="256"
+                                    Components="SaturationValue"
+                                    Color="{Binding SelectedColor, Mode=TwoWay}" />
+                            </Grid>
+							<color:ColorPreviewer x:Name="Previewer"
+								IsVisible="{Binding FilterBySpectrum}"
+                                Grid.Column="1"
+                                Width="280"
+                                Height="16"
+								IsAccentColorsVisible="False"
+                                HsvColor="{Binding #Spectrum.HsvColor, Mode=TwoWay}" />
+							
+                           
                             <RadioButton
-                                Content="Filter using Spectrum"
+                                Content="{x:Static lang:Resource.FilterBySpectrum}"
                                 GroupName="ColorMode"
-                                IsChecked="{Binding FilterByColor}" />
+                                IsChecked="{Binding FilterBySpectrum}" />
                             <RadioButton
-                                Content="Filter using Name"
+                                Content="{x:Static lang:Resource.FilterByString}"
                                 GroupName="ColorMode"
                                 IsChecked="{Binding FilterByString}" />
-                            <RadioButton Content="Don't Filter with Color" GroupName="ColorMode" />
+                            <RadioButton Content="{x:Static lang:Resource.DoNotFilterByColor}" GroupName="ColorMode" />
 
-                            <TextBlock Margin="0,0,0,0" Text="Glaze Type" />
+                            <TextBlock Margin="0,0,0,0" Text="{x:Static lang:Resource.GlazeType}" />
                             <ComboBox ItemsSource="{Binding GlazeTypes}" SelectedItem="{Binding SelectedGlazeType, Mode=TwoWay}" />
 
-                            <TextBlock Margin="0,0,0,0" Text="Surface Condition" />
+                            <TextBlock Margin="0,0,0,0" Text="{x:Static lang:Resource.SurfaceCondition}" />
                             <ComboBox ItemsSource="{Binding SurfaceConditions}" SelectedItem="{Binding SelectedSurfaceCondition, Mode=TwoWay}" />
-                            <TextBlock Margin="0,0,0,0" Text="Firing Atmosphere" />
+                            <TextBlock Margin="0,0,0,0" Text="{x:Static lang:Resource.FiringAtmosphere}" />
                             <ComboBox
                                 Width="150"
                                 ItemsSource="{Binding FiringTypes}"
                                 SelectedItem="{Binding SelectedFiringType, Mode=TwoWay}" />
-                            <TextBlock Margin="0,0,0,0" Text="Color Name" />
-                            <ComboBox ItemsSource="{Binding ColorPalettes}" SelectedItem="{Binding SelectedColorPalette, Mode=TwoWay}" />
+                            <TextBlock 
+								Margin="0,0,0,0" 
+							    Text="{x:Static lang:Resource.ColorName}"
+							    IsVisible="{Binding FilterByString}"/>
+                            <ComboBox 
+								ItemsSource="{Binding ColorPalettes}" 
+							    SelectedItem="{Binding SelectedColorPalette, Mode=TwoWay}"
+							    IsVisible="{Binding FilterByString}"/>
                             <Button
                                 Width="100"
                                 HorizontalAlignment="Right"
                                 Command="{Binding SearchCommand}"
-                                Content="Search" />
+                                Content="{x:Static lang:Resource.Search}" />
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
             </TabControl>
+			</Grid>
         </Border>
 
         <!--  Main Content Area  -->
@@ -85,7 +114,7 @@
             Margin="20"
             Background="#FFFFFF"
             RowDefinitions="*,Auto">
-            <TextBlock IsVisible="{Binding IsFilterEmpty}" Text="NO GLAZES FOUND" />
+            <TextBlock IsVisible="{Binding IsFilterEmpty}" Text="{x:Static lang:Resource.NoGlazesFound}" />
 
             <!--  Image Grid  -->
             <ScrollViewer Margin="0,40,0,0" VerticalScrollBarVisibility="Auto">
@@ -146,6 +175,13 @@
                         Height="130"
                         Source="{Binding SelectedCard.Image}" />
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
+                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Original Tileboard"  />
+                    </TextBlock>
+                    <Image
+                        Width="130"
+                        Height="130"
+                        Source="{Binding SelectedCard.BoardImage}" />
+                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
                         <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Glaze Type"  />
                     </TextBlock>
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
@@ -158,7 +194,7 @@
                         <Run Text="{Binding SelectedCard.FiringType}" />
                     </TextBlock>
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Soil Type" />
+                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Clay Type" />
                     </TextBlock>
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
                         <Run Text="{Binding SelectedCard.SoilType}" />
