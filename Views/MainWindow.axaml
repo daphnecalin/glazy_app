@@ -18,7 +18,7 @@
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="400,*,200" RowDefinitions="*">
+    <Grid ColumnDefinitions="400,*,400" RowDefinitions="*">
 
         <!--  Left Sidebar  -->
         <Border
@@ -163,7 +163,7 @@
             CornerRadius="6"
             IsVisible="{Binding IsSidebarVisible}">
 
-            <DockPanel Width="200">
+            <DockPanel Width="400">
                 <StackPanel
                     Margin="10"
                     HorizontalAlignment="Center"
@@ -173,19 +173,22 @@
                         Width="130"
                         Height="130"
                         Source="{Binding SelectedCard.Image}" />
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Original Tileboard"  />
-                    </TextBlock>
-                    <Image
-                        Width="130"
-                        Height="130"
-                        Source="{Binding SelectedCard.BoardImage}" />
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Glaze Type"  />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run Text="{Binding SelectedCard.GlazeType}" />
-                    </TextBlock>
+                    <Grid 
+                        ColumnDefinitions="100,100"
+                        RowDefinitions="*"
+                        HorizontalAlignment="Center">
+                        
+                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" TextAlignment="Center">
+                                <Run FontWeight="DemiBold" Text="Glaze Type"  />
+                            </TextBlock>
+                        
+                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextAlignment="Center">
+                               // <Run Text="{Binding SelectedCard.GlazeType}" />
+                               <Run Text="Text" />
+                            </TextBlock>
+                        
+                    </Grid>
+
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
                         <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Firing Type" />
                     </TextBlock>
@@ -217,6 +220,31 @@
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
                         <Run Text="{Binding SelectedCard.ColorName}" />
                     </TextBlock>
+                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
+                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Original Tileboard"  />
+                    </TextBlock>
+                    
+                    <Border Background="#ffffff" CornerRadius="4" Padding="5">
+                        <Panel>
+                            <Image
+                                Width="350"
+                                Source="{Binding SelectedCard.BoardImage}" />
+                            <Border>
+                                <Border.Styles>
+                                    <Style Selector="Border">
+                                        <Setter Property="Background" Value="#80000000" />
+                                    </Style>
+                                        <Style Selector="Border:pointerover">
+                                            <Setter Property="Background" Value="#A0000000"/>
+                                        </Style>
+                                </Border.Styles>
+                                <TextBlock Text="Click to Expand" 
+                                    Foreground="White" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center"/>
+                            </Border>
+                        </Panel>
+                    </Border>
                     <!-- <TextBlock Text="{Binding SelectedCard.ImagePath}"/> -->
                     <!-- <TextBlock Text="{Binding SelectedCard.Lab}" /> -->
 
