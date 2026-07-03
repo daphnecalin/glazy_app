@@ -258,8 +258,10 @@
         </Border>
 
     </Grid>
+    <!--
         <Border IsVisible="{Binding IsPopupVisible}" Background="#40000000">
         </Border>
+    -->
     </Grid>
 
 </Window>
