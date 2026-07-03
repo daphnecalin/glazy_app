@@ -98,6 +98,13 @@ namespace ASTEM_DB.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isSidebarVisible, value);
         }
 
+        private bool _isOverlayVisible;
+        public bool IsOverlayVisible
+        {
+            get => _isOverlayVisible;
+            set => this.RaiseAndSetIfChanged(ref _isOverlayVisible, value);
+        }
+
         private int _red;
         public int Red
         {

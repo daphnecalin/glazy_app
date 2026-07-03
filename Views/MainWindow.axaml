@@ -184,7 +184,7 @@
                     <Separator Width="360"/>
                     <Grid 
                         ColumnDefinitions="180,180"
-                        RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto"
+                        RowDefinitions="Auto"
                         HorizontalAlignment="Center">
                         
                             <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" TextAlignment="Left">
@@ -225,15 +225,26 @@
                         
                     </Grid>
                     
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Original Tileboard"  />
+                    <TextBlock 
+                        HorizontalAlignment="Left" 
+                        TextAlignment="Left" 
+                        Margin="10 10 10 0" 
+                        TextElement.Foreground="#676767">
+                          <Run FontWeight="DemiBold" Text="Tileboard"/>
                     </TextBlock>
-                    
-                    <Border Background="#ffffff" CornerRadius="4" Padding="5">
+                    <Separator Width="360"/>
+                    <Button 
+                                Click="ToggleOverlay"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Margin="10,10,0,0"
+                                Background="#FFFFFF"
+                                >
                         <Panel>
                             <Image
                                 Width="350"
                                 Source="{Binding SelectedCard.BoardImage}" />
+                            
                             <Border>
                                 <Border.Styles>
                                     <Style Selector="Border">
@@ -248,8 +259,9 @@
                                     HorizontalAlignment="Center" 
                                     VerticalAlignment="Center"/>
                             </Border>
+                            
                         </Panel>
-                    </Border>
+                    </Button>
                     <!-- <TextBlock Text="{Binding SelectedCard.ImagePath}"/> -->
                     <!-- <TextBlock Text="{Binding SelectedCard.Lab}" /> -->
 
@@ -258,10 +270,27 @@
         </Border>
 
     </Grid>
-    <!--
-        <Border IsVisible="{Binding IsPopupVisible}" Background="#40000000">
-        </Border>
-    -->
+        <Panel>
+            <Button 
+                Click="ToggleOverlay"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                IsVisible="{Binding IsOverlayVisible}">
+                <Border IsVisible="{Binding IsOverlayVisible}" Background="#40000000" Width="1920" Height="1080">
+                    <TextBlock Text="Click to Expand" 
+                                            HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                </Border>
+                
+
+            </Button>
+            <Image
+                Width="1200"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsVisible="{Binding IsOverlayVisible}"
+                Source="{Binding SelectedCard.BoardImage}" />
+        </Panel>
     </Grid>
 
 </Window>

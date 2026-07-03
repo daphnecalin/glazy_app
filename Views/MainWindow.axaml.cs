@@ -32,7 +32,13 @@ namespace ASTEM_DB.Views
                 }
             }
         }
-
+        private void ToggleOverlay(object? sender, RoutedEventArgs e)
+        {
+            if (this.DataContext is MainWindowViewModel vm)
+            {
+                vm.IsOverlayVisible = !vm.IsOverlayVisible;
+            }
+        }
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
