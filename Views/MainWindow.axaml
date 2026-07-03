@@ -18,7 +18,8 @@
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="400,*,400" RowDefinitions="*">
+    <Grid>
+        <Grid ColumnDefinitions="400,*,400" RowDefinitions="*">
 
         <!--  Left Sidebar  -->
         <Border
@@ -173,53 +174,57 @@
                         Width="130"
                         Height="130"
                         Source="{Binding SelectedCard.Image}" />
+                    <TextBlock 
+                        HorizontalAlignment="Left" 
+                        TextAlignment="Left" 
+                        Margin="10 10 10 0" 
+                        TextElement.Foreground="#676767">
+                          <Run FontWeight="DemiBold" Text="Properties"/>
+                    </TextBlock>
+                    <Separator Width="360"/>
                     <Grid 
-                        ColumnDefinitions="100,100"
-                        RowDefinitions="*"
+                        ColumnDefinitions="180,180"
+                        RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto"
                         HorizontalAlignment="Center">
                         
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" TextAlignment="Center">
+                            <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" TextAlignment="Left">
                                 <Run FontWeight="DemiBold" Text="Glaze Type"  />
+                                <LineBreak/>
+                                <Run FontWeight="DemiBold" Text="Firing Type"  />
+                                <LineBreak/>
+                                <Run FontWeight="DemiBold" Text="Clay Type"  />
+                                <LineBreak/>
+                                <Run FontWeight="DemiBold" Text="Surface Condition"  />
+                                <LineBreak/>
+                                <Run FontWeight="DemiBold" Text="Chemical Composition"  />
+                                <LineBreak/>
+                                <Run FontWeight="DemiBold" Text="Color"  />
                             </TextBlock>
                         
-                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextAlignment="Center">
-                               // <Run Text="{Binding SelectedCard.GlazeType}" />
-                               <Run Text="Text" />
+                            <TextBlock Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" TextAlignment="Left" >
+                                <Run Text="{Binding SelectedCard.GlazeType}" />
+                                <Run Text="Text" />
+                                <LineBreak/>
+                                <Run Text="{Binding SelectedCard.FiringType}" />
+                                <Run Text="Text" />
+                                <LineBreak/>
+
+                                <Run Text="{Binding SelectedCard.SoilType}" />
+                                <Run Text="Text" />
+                                <LineBreak/>
+
+                                <Run Text="{Binding SelectedCard.SurfaceCondition}" />
+                                <Run Text="Text" />
+
+                                <LineBreak/>
+                                <Run Text="{Binding SelectedCard.ChemicalComposition}" />
+                               
+                                <LineBreak/>
+                                <Run Text="{Binding SelectedCard.ColorName}" />
                             </TextBlock>
                         
                     </Grid>
-
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Firing Type" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run Text="{Binding SelectedCard.FiringType}" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Clay Type" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run Text="{Binding SelectedCard.SoilType}" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Surface Condition" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run Text="{Binding SelectedCard.SurfaceCondition}" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Chemical Composition" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run Text="{Binding SelectedCard.ChemicalComposition}" />
-                    </TextBlock>
-
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Color" />
-                    </TextBlock>
-                    <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
-                        <Run Text="{Binding SelectedCard.ColorName}" />
-                    </TextBlock>
+                    
                     <TextBlock HorizontalAlignment="Center" TextAlignment="Center">
                         <Run FontWeight="DemiBold" TextDecorations="Underline" Text="Original Tileboard"  />
                     </TextBlock>
@@ -252,6 +257,9 @@
             </DockPanel>
         </Border>
 
+    </Grid>
+        <Border IsVisible="{Binding IsPopupVisible}" Background="#40000000">
+        </Border>
     </Grid>
 
 </Window>
