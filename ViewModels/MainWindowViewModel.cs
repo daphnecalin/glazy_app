@@ -352,11 +352,11 @@ namespace ASTEM_DB.ViewModels
 
         // 0 : board
         // 1 : tiles
-        private int _searchCategory;
-        public int SearchCategory
+        private int _searchForTiles;
+        public int SearchForTiles
         {
-            get => _searchCategory;
-            set => this.RaiseAndSetIfChanged(ref _searchCategory, value); // Assumes ReactiveUI
+            get => _searchForTiles;
+            set => this.RaiseAndSetIfChanged(ref _searchForTiles, value); // Assumes ReactiveUI
         }
         private Color _selectedColor;
         public Color SelectedColor
