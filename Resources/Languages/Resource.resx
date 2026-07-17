@@ -123,6 +123,9 @@
   <data name="GlazeSearch" xml:space="preserve">
     <value>Glaze Search</value>
   </data>
+  <data name="BoardSearch" xml:space="preserve">
+    <value>Board Search</value>
+  </data>
   <data name="FilterByString" xml:space="preserve">
     <value>Filter by Name</value>
   </data>

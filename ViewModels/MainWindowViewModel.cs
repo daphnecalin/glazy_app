@@ -350,6 +350,14 @@ namespace ASTEM_DB.ViewModels
             }
         }
 
+        // 0 : board
+        // 1 : tiles
+        private int _searchCategory;
+        public int SearchCategory
+        {
+            get => _searchCategory;
+            set => this.RaiseAndSetIfChanged(ref _searchCategory, value); // Assumes ReactiveUI
+        }
         private Color _selectedColor;
         public Color SelectedColor
         {

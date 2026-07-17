@@ -86,6 +86,12 @@ namespace ASTEM_DB.Resources.Languages {
                 return ResourceManager.GetString("FilterBySpectrum", resourceCulture);
             }
         }
+
+         public static string BoardSearch {
+            get {
+                return ResourceManager.GetString("BoardSearch", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Filter by Name.

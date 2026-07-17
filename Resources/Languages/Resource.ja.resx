@@ -123,6 +123,9 @@
   <data name="GlazeSearch" xml:space="preserve">
     <value>釉薬検索</value>
   </data>
+  <data name="BoardSearch" xml:space="preserve">
+    <value>Board Search</value>
+  </data>
   <data name="FilterByString" xml:space="preserve">
     <value>名前でフィルター</value>
   </data>

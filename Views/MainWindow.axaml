@@ -29,7 +29,18 @@
             BorderThickness="0,0,1,0"
             CornerRadius="0">
 			<Grid>
-            <TabControl Margin="10" SelectedIndex="0">
+            <TabControl Margin="10" SelectedIndex="{Binding SearchCategory}">
+              <TabItem
+                    FontSize="20"
+                    FontWeight="DemiBold"
+                    Header="{x:Static lang:Resource.BoardSearch}">
+                    <ScrollViewer Margin="0,30,0,0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="10" Spacing="5">
+                            <TextBlock Margin="0,0,0,0" Text="{x:Static lang:Resource.GlazeType}" />
+                        </StackPanel>
+                    </ScrollViewer>
+              </TabItem>
+
                 <TabItem
                     FontSize="20"
                     FontWeight="DemiBold"
