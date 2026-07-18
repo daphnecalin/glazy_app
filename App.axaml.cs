@@ -2,6 +2,7 @@ using ASTEM_DB.Resources.Languages;
 using ASTEM_DB.ViewModels;
 using ASTEM_DB.Views;
 using Avalonia;
+using Avalonia.Diagnostics;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using System.Globalization;
@@ -25,6 +26,10 @@ namespace ASTEM_DB
                 {
                     DataContext = new MainWindowViewModel(),
                 };
+
+                #if DEBUG
+                desktop.MainWindow.AttachDevTools();
+                #endif
             }
 
             base.OnFrameworkInitializationCompleted();

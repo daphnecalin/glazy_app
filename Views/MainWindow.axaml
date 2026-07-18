@@ -21,9 +21,9 @@
     <DockPanel LastChildFill="True">
         <Border DockPanel.Dock="Top" 
                 Height="100" 
-                Background="#B8B8B8" 
+                Background="#FFFFFF" 
                 Padding="15,0">
-            <Grid ColumnDefinitions="100, 260, *, Auto">
+            <Grid ColumnDefinitions="100, Auto, *, Auto">
                 <Border Width="75" 
                         Height="75" 
                         CornerRadius="50" 
@@ -34,9 +34,10 @@
                 </Border>
                 <TextBlock Grid.Column="1" 
                         Text="C.R.A.F.T." 
+                        FontSize="20"
                         VerticalAlignment="Center" 
                         FontWeight="SemiBold"/>
-                <TabControl VerticalAlignment="Center"  Margin="10" SelectedIndex="{Binding SearchForTiles}" Grid.Column="2">
+                <TabControl VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" SelectedIndex="{Binding SearchForTiles}" Grid.Column="2">
                  <TabItem
                     FontSize="20"
                     FontWeight="DemiBold"
@@ -180,21 +181,21 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button
-                                    Width="150"
-                                    Height="150"
+                                    Width="270"
+                                    Height="180"
                                     Margin="10,10,0,0"
                                     Background="#FFFFFF"
                                     Click="OnCardClicked">
                                     <Border
-                                        Width="150"
-                                        Height="150"
+                                        Width="270"
+                                        Height="180"
                                         Margin="5"
                                         BorderBrush="Gray"
                                         BorderThickness="1"
                                         CornerRadius="4">
                                         <Image
-                                            Width="120"
-                                            Height="120"
+                                            Width="260"
+                                            Height="170"
                                             Source="{Binding Image}" />
                                     </Border>
                                 </Button>
@@ -216,7 +217,7 @@
                                 <Button
                                     Width="150"
                                     Height="150"
-                                    Margin="10,10,0,0"
+                                    Margin="25,25,0,0"
                                     Background="#FFFFFF"
                                     Click="OnCardClicked">
                                     <Border
@@ -360,21 +361,54 @@
                 Click="ToggleOverlay"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
-                IsVisible="{Binding IsOverlayVisible}">
-                <Border IsVisible="{Binding IsOverlayVisible}" Background="#40000000" Width="1920" Height="1080">
+                IsVisible="{Binding IsOverlayVisible}"
+                Background="#00000000">
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#00000000"></Setter>
+                    </Style>
+                    <Style Selector="Button:pressed">
+                        <Setter Property="Background" Value="#00000000"></Setter>
+                    </Style>
+                     <Style Selector="Button:pointerover /template/ ContentPresenter Border#Overlay">
+                        <Setter Property="Background" Value="#20000000"></Setter>
+                    </Style>
+                    <Style Selector="Button:pressed /template/ ContentPresenter Border#Overlay">
+                        <Setter Property="Background" Value="#20000000"></Setter>
+                    </Style>
+                </Button.Styles>
+                <Border x:Name="Overlay" IsVisible="{Binding IsOverlayVisible}" Background="#40000000" Width="1920" Height="1080">
+                    
                     <TextBlock Text="Click to Expand" 
                                             HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
+
                 </Border>
                 
 
             </Button>
-            <Image
+            <Panel
                 Width="1200"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                IsVisible="{Binding IsOverlayVisible}"
+                IsVisible="{Binding IsOverlayVisible}">
+            <Image
+                Width="1200"
                 Source="{Binding SelectedCard.BoardImage}" />
+            <Button
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Width="50"
+                Height="50"
+                Click="ToggleOverlay">
+                
+                <TextBlock Text="X" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Foreground="White"/>
+            </Button>
+            </Panel>
+            
         </Panel>
     </Grid>
 </DockPanel>
