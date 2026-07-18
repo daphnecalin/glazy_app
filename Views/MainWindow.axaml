@@ -370,14 +370,17 @@
                     <Style Selector="Button:pressed">
                         <Setter Property="Background" Value="#00000000"></Setter>
                     </Style>
-                     <Style Selector="Button:pointerover /template/ ContentPresenter Border#Overlay">
-                        <Setter Property="Background" Value="#20000000"></Setter>
+                    <Style Selector="Border#Overlay">
+                        <Setter Property="Background" Value="#40000000"></Setter>
                     </Style>
-                    <Style Selector="Button:pressed /template/ ContentPresenter Border#Overlay">
-                        <Setter Property="Background" Value="#20000000"></Setter>
+                     <Style Selector="Button:pointerover Border#Overlay">
+                        <Setter Property="Background" Value="#50000000"></Setter>
+                    </Style>
+                    <Style Selector="Button:pressed  Border#Overlay">
+                        <Setter Property="Background" Value="#50000000"></Setter>
                     </Style>
                 </Button.Styles>
-                <Border x:Name="Overlay" IsVisible="{Binding IsOverlayVisible}" Background="#40000000" Width="1920" Height="1080">
+                <Border x:Name="Overlay" IsVisible="{Binding IsOverlayVisible}" Width="1920" Height="1080">
                     
                     <TextBlock Text="Click to Expand" 
                                             HorizontalAlignment="Center" 
@@ -401,7 +404,14 @@
                 Width="50"
                 Height="50"
                 Click="ToggleOverlay">
-                
+                <Button.Styles>
+                    <Style Selector="Button:pointerover /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#40000000"></Setter>
+                    </Style>
+                        <Style Selector="Button:pressed">
+                            <Setter Property="Background" Value="#40000000"></Setter>
+                        </Style>
+                    </Button.Styles>
                 <TextBlock Text="X" 
                     HorizontalAlignment="Center" 
                     VerticalAlignment="Center"
