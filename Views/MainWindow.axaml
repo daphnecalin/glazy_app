@@ -181,14 +181,14 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Button
-                                    Width="270"
-                                    Height="180"
+                                    Width="280"
+                                    Height="190"
                                     Margin="10,10,0,0"
                                     Background="#FFFFFF"
                                     Click="OnCardClicked">
                                     <Border
-                                        Width="270"
-                                        Height="180"
+                                        Width="280"
+                                        Height="190"
                                         Margin="5"
                                         BorderBrush="Gray"
                                         BorderThickness="1"
