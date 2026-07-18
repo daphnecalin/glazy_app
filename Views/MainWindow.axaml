@@ -49,10 +49,21 @@
                     Header="{x:Static lang:Resource.GlazeSearch}">
                 </TabItem>
                 </TabControl>
-                <TextBlock Grid.Column="3" 
-                        Text="Settings" 
-                        VerticalAlignment="Center" 
-                        FontWeight="SemiBold"/>
+                <Button Width="50" 
+                    Grid.Column="3" 
+                    Height="50" 
+                    Padding="0"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    ToolTip.Tip="Settings">
+                
+                <PathIcon Width="36" 
+                        Height="36" 
+                        Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" 
+                        Foreground="{DynamicResource SystemBaseHighColor}"/>
+            </Button>
             </Grid>
         </Border>
     <Grid>
@@ -153,41 +164,75 @@
             <TextBlock IsVisible="{Binding IsFilterEmpty}" Text="{x:Static lang:Resource.NoGlazesFound}" />
 
             <!--  Image Grid  -->
-            <ScrollViewer Margin="0,40,0,0" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <ScrollViewer Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" IsVisible="{Binding !SearchForTiles}">
+                    <ItemsControl ItemsSource="{Binding BoardItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
 
-                <ItemsControl ItemsSource="{Binding CardItems}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button
-                                Width="150"
-                                Height="150"
-                                Margin="10,10,0,0"
-                                Background="#FFFFFF"
-                                Click="OnCardClicked">
-                                <Border
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
                                     Width="150"
                                     Height="150"
-                                    Margin="5"
-                                    BorderBrush="Gray"
-                                    BorderThickness="1"
-                                    CornerRadius="4">
-                                    <Image
-                                        Width="120"
-                                        Height="120"
-                                        Source="{Binding Image}" />
-                                </Border>
-                            </Button>
-                        </DataTemplate>
+                                    Margin="10,10,0,0"
+                                    Background="#FFFFFF"
+                                    Click="OnCardClicked">
+                                    <Border
+                                        Width="150"
+                                        Height="150"
+                                        Margin="5"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1"
+                                        CornerRadius="4">
+                                        <Image
+                                            Width="120"
+                                            Height="120"
+                                            Source="{Binding Image}" />
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
 
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                <ScrollViewer Margin="0,0,0,0" VerticalScrollBarVisibility="Auto" IsVisible="{Binding SearchForTiles}">
+                    <ItemsControl ItemsSource="{Binding CardItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Width="150"
+                                    Height="150"
+                                    Margin="10,10,0,0"
+                                    Background="#FFFFFF"
+                                    Click="OnCardClicked">
+                                    <Border
+                                        Width="150"
+                                        Height="150"
+                                        Margin="5"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1"
+                                        CornerRadius="4">
+                                        <Image
+                                            Width="120"
+                                            Height="120"
+                                            Source="{Binding Image}" />
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
 
         </Grid>
         <!--  Card Info Sidebar  -->

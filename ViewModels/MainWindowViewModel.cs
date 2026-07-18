@@ -29,6 +29,13 @@ namespace ASTEM_DB.ViewModels
             set => this.RaiseAndSetIfChanged(ref _cardItems, value);
         }
 
+        private ObservableCollection<BoardItemViewModel> _boardItems = new ObservableCollection<BoardItemViewModel>();
+        public ObservableCollection<BoardItemViewModel> BoardItems
+        {
+            get => _boardItems;
+            set => this.RaiseAndSetIfChanged(ref _boardItems, value);
+        }
+
         public ObservableCollection<string> GlazeTypes { get; } = new();
         public ObservableCollection<string> SurfaceConditions { get; } = new();
 
@@ -261,6 +268,7 @@ namespace ASTEM_DB.ViewModels
             }).ToList();
 
             CardItems.Clear();
+            //BoardItems.Clear();
             IsFilterEmpty = !filtered.Any();
 
             foreach (var item in filtered)
@@ -269,6 +277,7 @@ namespace ASTEM_DB.ViewModels
 
                 item.Image = await _db.GetImageByIdAsync(item.Id);
                 CardItems.Add(item);
+                //BoardItems.Add(item);
             }
         }
 
