@@ -198,6 +198,19 @@ namespace ASTEM_DB.ViewModels
             labConversion();
         }
 
+        public async void SearchBoardCommand()
+        {
+            _searchCts?.Cancel();
+            _searchCts = new CancellationTokenSource();
+            try
+            {
+                await FilterBoardItemsAsync(_searchCts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Search was canceled, do nothing
+            }
+        }
         public async void SearchCommand()
         {
             _searchCts?.Cancel();
@@ -234,6 +247,18 @@ namespace ASTEM_DB.ViewModels
             await FilterCardItemsAsync(CancellationToken.None);
         }
 
+        private async Task FilterBoardItemsAsync(CancellationToken cancellationToken)
+        {
+            var allItems = await _db.GetFilteredBoardItemsAsync(/*add any filters here later*/);
+            BoardItems.Clear();
+            foreach (var item in allItems)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                item.Image = await _db.GetBoardImageByIdAsync(item.Id);
+                BoardItems.Add(item);
+            }
+
+        }
         private async Task FilterCardItemsAsync(CancellationToken cancellationToken)
         {
             var allItems = await _db.GetFilteredCardItemMetadataAsync(SelectedGlazeType, SelectedSurfaceCondition, SelectedFiringType);
@@ -268,7 +293,7 @@ namespace ASTEM_DB.ViewModels
             }).ToList();
 
             CardItems.Clear();
-            //BoardItems.Clear();
+            
             IsFilterEmpty = !filtered.Any();
 
             foreach (var item in filtered)
@@ -277,7 +302,6 @@ namespace ASTEM_DB.ViewModels
 
                 item.Image = await _db.GetImageByIdAsync(item.Id);
                 CardItems.Add(item);
-                //BoardItems.Add(item);
             }
         }
 

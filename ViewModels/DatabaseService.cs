@@ -95,6 +95,59 @@ namespace ASTEM_DB.Services
         }
 
 
+        public async Task<List<BoardItemViewModel>> GetFilteredBoardItemsAsync()
+        {
+            var items = new List<BoardItemViewModel>();
+        
+            await using var conn = new MySqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            // add any filters here
+
+            string query = $@"
+        SELECT 
+            tb.ID,
+            tb.Image,
+            tb.Description,
+            tb.CreatedBy,
+            tb.TileCount
+        FROM tileboard tb
+       ;
+    ";
+
+        await using var cmd = new MySqlCommand(query, conn);
+
+        await using var reader = await cmd.ExecuteReaderAsync();
+
+        string basePath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..");
+            // string imageDir = Path.Combine(basePath, "Assets");
+        string placeholderPath = Path.Combine(basePath, "Assets/placeholder.png");
+
+        while (await reader.ReadAsync())
+            {
+                var idOrdinal = reader.GetOrdinal("ID");
+                var descriptionOrdinal = reader.GetOrdinal("Description");
+                var createdByOrdinal = reader.GetOrdinal("CreatedBy");
+                var tileCountOrdinal = reader.GetOrdinal("TileCount");
+
+                items.Add(new BoardItemViewModel
+                {
+                    Id = reader.GetInt32(idOrdinal),
+                    Description = reader.IsDBNull(descriptionOrdinal)
+                        ? "Unknown"
+                        : reader.GetString(descriptionOrdinal),
+                    CreatedBy = reader.IsDBNull(createdByOrdinal)
+                        ? "Unknown"
+                        : reader.GetString(createdByOrdinal),
+                    TileCount = reader.IsDBNull(tileCountOrdinal)
+                        ? 0
+                        : reader.GetInt32(tileCountOrdinal),
+                });
+            }
+
+            return items;
+        }
+        // This function is not used?
         public async Task<List<CardItemViewModel>> GetFilteredCardItemsAsync(string? glazeType, string? surfaceCondition, string? firingType)
         {
             var items = new List<CardItemViewModel>();

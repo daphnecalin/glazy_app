@@ -4,7 +4,7 @@ namespace ASTEM_DB.ViewModels
 {
     public class BoardItemViewModel : ViewModelBase
     {
-        private string _id = string.Empty;
+        private int _id;
         private Avalonia.Media.Imaging.Bitmap _image = null!;
 
         private int _tileCount;
@@ -12,7 +12,7 @@ namespace ASTEM_DB.ViewModels
         private string _description = string.Empty;
         private string _createdBy = string.Empty;
         private string _imagePath = string.Empty;
-        public string Id
+        public int Id
         {
             get => _id;
             set => this.RaiseAndSetIfChanged(ref _id, value);

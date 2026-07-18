@@ -79,7 +79,11 @@
 			<Grid>
                     <ScrollViewer Margin="0,30,0,0" VerticalScrollBarVisibility="Auto" IsVisible="{Binding !SearchForTiles}">
                         <StackPanel Margin="10" Spacing="5">
-                            <TextBlock Margin="0,0,0,0" Text="{x:Static lang:Resource.GlazeType}" />
+                            <Button
+                                Width="100"
+                                HorizontalAlignment="Right"
+                                Command="{Binding SearchBoardCommand}"
+                                Content="{x:Static lang:Resource.Search}" />
                         </StackPanel>
                     </ScrollViewer>
 

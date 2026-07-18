@@ -18,7 +18,7 @@ namespace ASTEM_DB
 
         public override void OnFrameworkInitializationCompleted()
         {
-            Resource.Culture = new CultureInfo("ja");
+            Resource.Culture = new CultureInfo("en");
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow
