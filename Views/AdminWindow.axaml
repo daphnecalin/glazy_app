@@ -30,6 +30,11 @@
 
     <MenuItem Header="Edit" />
     <MenuItem Header="View" />
+    <MenuItem Header="View">
+    <MenuItem Header="Zoom In" Click="OnZoomInClicked" />
+    <MenuItem Header="Zoom Out" Click="OnZoomOutClicked" />
+    <MenuItem Header="Reset Zoom" Click="OnResetZoomClicked" />
+</MenuItem>
     <MenuItem Header="Help" />
 </Menu>
 <!-- Canvas area -->
@@ -42,13 +47,14 @@
     BorderThickness="1">
 
     <Grid>
-        <TextBlock
-            x:Name="CanvasPlaceholder"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="24"
-            Text="Open an image to begin" />
+    <TextBlock
+        x:Name="CanvasPlaceholder"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        FontSize="24"
+        Text="Open an image to begin" />
 
+    <Grid>
         <Image
             x:Name="CanvasImage"
             Margin="10"
@@ -56,7 +62,15 @@
             VerticalAlignment="Center"
             Stretch="Uniform"
             IsVisible="False" />
+
+        <Canvas
+            x:Name="DrawingCanvas"
+            Background="Transparent"
+            PointerPressed="OnCanvasPointerPressed"
+            PointerMoved="OnCanvasPointerMoved"
+            PointerReleased="OnCanvasPointerReleased" />
     </Grid>
+ </Grid>
 </Border>
 
         <!-- Tool bar -->
