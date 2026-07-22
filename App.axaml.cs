@@ -21,10 +21,7 @@ namespace ASTEM_DB
             Resource.Culture = new CultureInfo("ja");
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
+                desktop.MainWindow = new AdminWindow();
             }
 
             base.OnFrameworkInitializationCompleted();
