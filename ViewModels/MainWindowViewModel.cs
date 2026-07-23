@@ -77,14 +77,52 @@ namespace ASTEM_DB.ViewModels
             get => _selectedCard;
             set
             {
+                var changed = !EqualityComparer<CardItemViewModel?>.Default.Equals(_selectedCard, value);
                 this.RaiseAndSetIfChanged(ref _selectedCard, value);
-                IsSidebarVisible = value != null;
-                if (value != null && value.BoardImage == null)
+                if (changed)
                 {
-                    _ = LoadBoardImageAsync(value);
+                    this.RaisePropertyChanged(nameof(SelectedSidebarItem));
+                    this.RaisePropertyChanged(nameof(IsCardSelected));
+                    this.RaisePropertyChanged(nameof(IsBoardSelected));
+                    if (value != null)
+                    {
+                        SelectedBoard = null;
+                        IsSidebarVisible = true;
+                        if (value.BoardImage == null)
+                        {
+                            _ = LoadBoardImageAsync(value);
+                        }
+                    }
                 }
             }
         }
+
+        private BoardItemViewModel? _selectedBoard;
+        public BoardItemViewModel? SelectedBoard
+        {
+            get => _selectedBoard;
+            set
+            {
+                var changed = !EqualityComparer<BoardItemViewModel?>.Default.Equals(_selectedBoard, value);
+                this.RaiseAndSetIfChanged(ref _selectedBoard, value);
+                if (changed)
+                {
+                    this.RaisePropertyChanged(nameof(SelectedSidebarItem));
+                    this.RaisePropertyChanged(nameof(IsBoardSelected));
+                    this.RaisePropertyChanged(nameof(IsCardSelected));
+                    if (value != null)
+                    {
+                        SelectedCard = null;
+                        IsSidebarVisible = true;
+                    }
+                }
+            }
+        }
+
+        public bool IsCardSelected => SelectedCard != null;
+        public bool IsBoardSelected => SelectedBoard != null;
+
+        public object? SelectedSidebarItem => SelectedCard ?? (object?)SelectedBoard;
 
         private async Task LoadBoardImageAsync(CardItemViewModel card)
         {
@@ -205,6 +243,7 @@ namespace ASTEM_DB.ViewModels
             try
             {
                 await FilterBoardItemsAsync(_searchCts.Token);
+                IsSidebarVisible = true;
             }
             catch (OperationCanceledException)
             {
@@ -257,8 +296,10 @@ namespace ASTEM_DB.ViewModels
                 item.Image = await _db.GetBoardImageByIdAsync(item.Id);
                 BoardItems.Add(item);
             }
-
+            SelectedBoard = BoardItems.FirstOrDefault();
         }
+
+        
         private async Task FilterCardItemsAsync(CancellationToken cancellationToken)
         {
             var allItems = await _db.GetFilteredCardItemMetadataAsync(SelectedGlazeType, SelectedSurfaceCondition, SelectedFiringType);
@@ -389,8 +430,21 @@ namespace ASTEM_DB.ViewModels
         public int SearchForTiles
         {
             get => _searchForTiles;
-            set => this.RaiseAndSetIfChanged(ref _searchForTiles, value); // Assumes ReactiveUI
+            set
+            {
+                var changed = _searchForTiles != value;
+                this.RaiseAndSetIfChanged(ref _searchForTiles, value);
+                if (changed)
+                {
+                    this.RaisePropertyChanged(nameof(IsBoardMode));
+                    this.RaisePropertyChanged(nameof(IsGlazeMode));
+                }
+            }
         }
+
+        public bool IsBoardMode => SearchForTiles == 1;
+        public bool IsGlazeMode => SearchForTiles == 0;
+
         private Color _selectedColor;
         public Color SelectedColor
         {

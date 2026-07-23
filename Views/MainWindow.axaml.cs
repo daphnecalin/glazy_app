@@ -16,18 +16,33 @@ namespace ASTEM_DB.Views
         }
         private void OnCardClicked(object? sender, RoutedEventArgs e)
         {
-            if (sender is Button button && button.DataContext is CardItemViewModel clickedCard)
+            if (sender is Button button)
             {
                 if (this.DataContext is MainWindowViewModel vm)
                 {
-                    if (vm.SelectedCard == clickedCard)
+                    if (button.DataContext is CardItemViewModel clickedCard)
                     {
-                        vm.IsSidebarVisible = !vm.IsSidebarVisible;
+                        if (vm.SelectedCard == clickedCard)
+                        {
+                            vm.IsSidebarVisible = !vm.IsSidebarVisible;
+                        }
+                        else
+                        {
+                            vm.SelectedCard = clickedCard;
+                            vm.IsSidebarVisible = true;
+                        }
                     }
-                    else
+                    else if (button.DataContext is BoardItemViewModel clickedBoard)
                     {
-                        vm.SelectedCard = clickedCard;
-                        vm.IsSidebarVisible = true;
+                        if (vm.SelectedBoard == clickedBoard)
+                        {
+                            vm.IsSidebarVisible = !vm.IsSidebarVisible;
+                        }
+                        else
+                        {
+                            vm.SelectedBoard = clickedBoard;
+                            vm.IsSidebarVisible = true;
+                        }
                     }
                 }
             }
