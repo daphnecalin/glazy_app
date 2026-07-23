@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Media;
 using System;
 
 namespace ASTEM_DB.Tools;
@@ -11,9 +9,13 @@ public class RectangleTool : Tool
 {
     private readonly Canvas _drawingCanvas;
 
-    private Point _startPoint;
-    private Rectangle? _activeRectangle;
-    private bool _isDrawingRectangle;
+    private Point? _startPoint;
+    private Point? _dragStartScreen;
+    private Annotation? _currentAnnotation;
+
+    private bool _isDragging;
+
+    private const double DragThreshold = 3;
 
     public RectangleTool(
         ToolSystem toolSystem,
@@ -23,38 +25,63 @@ public class RectangleTool : Tool
         _drawingCanvas = drawingCanvas;
     }
 
+    public override void OnToolSelected()
+    {
+        CancelUnfinishedAnnotation();
+    }
+
     public override void OnPointerPressed(
         PointerPressedEventArgs e)
     {
-        var properties =
-            e.GetCurrentPoint(_drawingCanvas).Properties;
+        var currentPoint =
+            e.GetCurrentPoint(_drawingCanvas);
 
-        if (!properties.IsLeftButtonPressed)
+        if (!currentPoint.Properties
+            .IsLeftButtonPressed)
         {
             return;
         }
 
-        _startPoint = e.GetPosition(_drawingCanvas);
-        _isDrawingRectangle = true;
+        var screenPosition =
+            e.GetPosition(_drawingCanvas);
 
-        _activeRectangle = new Rectangle
+        var canvasRect = new Rect(
+            0,
+            0,
+            _drawingCanvas.Bounds.Width,
+            _drawingCanvas.Bounds.Height);
+
+        var worldPosition =
+            CoordinateHelpers.ScreenToWorld(
+                screenPosition,
+                ToolSystem.Viewport,
+                canvasRect);
+
+        if (_startPoint is null)
         {
-            Width = 0,
-            Height = 0,
-            Stroke = Brushes.Red,
-            StrokeThickness = 2,
-            Fill = Brushes.Transparent
-        };
+            _startPoint = worldPosition;
+            _dragStartScreen = screenPosition;
+            _isDragging = false;
 
-        Canvas.SetLeft(
-            _activeRectangle,
-            _startPoint.X);
+            _currentAnnotation = new Annotation(
+                "rectangle",
+                [_startPoint.Value, _startPoint.Value],
+                [],
+                ToolSystem.CurrentAnnotationClass);
 
-        Canvas.SetTop(
-            _activeRectangle,
-            _startPoint.Y);
+            ToolSystem.AddAnnotation(
+                _currentAnnotation);
+        }
+        else
+        {
+            _currentAnnotation!.Bounds =
+            [
+                _startPoint.Value,
+                worldPosition
+            ];
 
-        _drawingCanvas.Children.Add(_activeRectangle);
+            FinishAnnotation();
+        }
 
         e.Pointer.Capture(_drawingCanvas);
         e.Handled = true;
@@ -63,34 +90,58 @@ public class RectangleTool : Tool
     public override void OnPointerMoved(
         PointerEventArgs e)
     {
-        if (!_isDrawingRectangle ||
-            _activeRectangle is null)
+        if (_startPoint is null ||
+            _currentAnnotation is null)
         {
             return;
         }
 
-        var currentPoint =
+        var screenPosition =
             e.GetPosition(_drawingCanvas);
 
-        var left = Math.Min(
-            _startPoint.X,
-            currentPoint.X);
+        if (_dragStartScreen is not null &&
+            !_isDragging)
+        {
+            var dx =
+                screenPosition.X -
+                _dragStartScreen.Value.X;
 
-        var top = Math.Min(
-            _startPoint.Y,
-            currentPoint.Y);
+            var dy =
+                screenPosition.Y -
+                _dragStartScreen.Value.Y;
 
-        var width = Math.Abs(
-            currentPoint.X - _startPoint.X);
+            if (Math.Sqrt(
+                    dx * dx +
+                    dy * dy) > DragThreshold)
+            {
+                _isDragging = true;
+            }
+        }
 
-        var height = Math.Abs(
-            currentPoint.Y - _startPoint.Y);
+        if (!_isDragging)
+        {
+            return;
+        }
 
-        Canvas.SetLeft(_activeRectangle, left);
-        Canvas.SetTop(_activeRectangle, top);
+        var canvasRect = new Rect(
+            0,
+            0,
+            _drawingCanvas.Bounds.Width,
+            _drawingCanvas.Bounds.Height);
 
-        _activeRectangle.Width = width;
-        _activeRectangle.Height = height;
+        var worldPosition =
+            CoordinateHelpers.ScreenToWorld(
+                screenPosition,
+                ToolSystem.Viewport,
+                canvasRect);
+
+        _currentAnnotation.Bounds =
+        [
+            _startPoint.Value,
+            worldPosition
+        ];
+
+        ToolSystem.NotifyStateChanged();
 
         e.Handled = true;
     }
@@ -98,15 +149,67 @@ public class RectangleTool : Tool
     public override void OnPointerReleased(
         PointerReleasedEventArgs e)
     {
-        if (!_isDrawingRectangle)
+        if (!_isDragging ||
+            _startPoint is null ||
+            _currentAnnotation is null)
         {
             return;
         }
 
-        _isDrawingRectangle = false;
-        _activeRectangle = null;
+        var screenPosition =
+            e.GetPosition(_drawingCanvas);
+
+        var canvasRect = new Rect(
+            0,
+            0,
+            _drawingCanvas.Bounds.Width,
+            _drawingCanvas.Bounds.Height);
+
+        var worldPosition =
+            CoordinateHelpers.ScreenToWorld(
+                screenPosition,
+                ToolSystem.Viewport,
+                canvasRect);
+
+        _currentAnnotation.Bounds =
+        [
+            _startPoint.Value,
+            worldPosition
+        ];
+
+        FinishAnnotation();
 
         e.Pointer.Capture(null);
         e.Handled = true;
+    }
+
+    public override void OnPointerExited(
+        PointerEventArgs e)
+    {
+        CancelUnfinishedAnnotation();
+    }
+
+    private void FinishAnnotation()
+    {
+        _startPoint = null;
+        _dragStartScreen = null;
+        _currentAnnotation = null;
+        _isDragging = false;
+
+        ToolSystem.NotifyStateChanged();
+    }
+
+    private void CancelUnfinishedAnnotation()
+    {
+        if (_currentAnnotation is not null)
+        {
+            ToolSystem.RemoveAnnotation(
+                _currentAnnotation.Id);
+        }
+
+        _startPoint = null;
+        _dragStartScreen = null;
+        _currentAnnotation = null;
+        _isDragging = false;
     }
 }

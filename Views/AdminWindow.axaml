@@ -12,109 +12,124 @@
 
         <!-- Top menu -->
         <Menu Grid.ColumnSpan="3">
-    <MenuItem Header="File">
-        <MenuItem
-            Header="Open Image..."
-            Click="OnOpenImageClicked" />
+            <MenuItem Header="File">
+                <MenuItem
+                    Header="Open Image..."
+                    Click="OnOpenImageClicked" />
 
-        <MenuItem
-            Header="Close Image"
-            Click="OnCloseImageClicked" />
+                <MenuItem
+                    Header="Close Image"
+                    Click="OnCloseImageClicked" />
 
-        <Separator />
+                <Separator />
 
-        <MenuItem
-            Header="Exit"
-            Click="OnExitClicked" />
-    </MenuItem>
+                <MenuItem
+                    Header="Exit"
+                    Click="OnExitClicked" />
+            </MenuItem>
 
-    <MenuItem Header="Edit" />
-    <MenuItem Header="View" />
-    <MenuItem Header="View">
-    <MenuItem Header="Zoom In" Click="OnZoomInClicked" />
-    <MenuItem Header="Zoom Out" Click="OnZoomOutClicked" />
-    <MenuItem Header="Reset Zoom" Click="OnResetZoomClicked" />
-</MenuItem>
-    <MenuItem Header="Help" />
-</Menu>
-<!-- Canvas area -->
-<Border
-    Grid.Row="1"
-    Grid.Column="1"
-    Margin="12"
-    Background="White"
-    BorderBrush="#999999"
-    BorderThickness="1">
+            <MenuItem Header="Edit" />
 
-    <Grid>
-    <TextBlock
-        x:Name="CanvasPlaceholder"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"
-        FontSize="24"
-        Text="Open an image to begin" />
+            <MenuItem Header="View">
+                <MenuItem
+                    Header="Zoom In"
+                    Click="OnZoomInClicked" />
 
-    <Grid>
-        <Image
-            x:Name="CanvasImage"
-            Margin="10"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Stretch="Uniform"
-            IsVisible="False" />
+                <MenuItem
+                    Header="Zoom Out"
+                    Click="OnZoomOutClicked" />
 
-        <Canvas
-            x:Name="DrawingCanvas"
-            Background="Transparent"
-            PointerPressed="OnCanvasPointerPressed"
-            PointerMoved="OnCanvasPointerMoved"
-            PointerReleased="OnCanvasPointerReleased" />
-    </Grid>
- </Grid>
-</Border>
+                <MenuItem
+                    Header="Reset Zoom"
+                    Click="OnResetZoomClicked" />
+            </MenuItem>
+
+            <MenuItem Header="Help" />
+        </Menu>
 
         <!-- Tool bar -->
-<Border
-    Grid.Row="1"
-    Grid.Column="0"
-    Background="#F0F0F0"
-    BorderBrush="#CCCCCC"
-    BorderThickness="0,1,1,0">
+        <Border
+            Grid.Row="1"
+            Grid.Column="0"
+            Background="#F0F0F0"
+            BorderBrush="#CCCCCC"
+            BorderThickness="0,1,1,0">
 
-    <StackPanel Margin="8" Spacing="8">
-        <ToggleButton
-    x:Name="PanToolButton"
-    Width="110"
-    HorizontalAlignment="Center"
-    Focusable="False"
-    Content="Hand"
-    Click="OnToolButtonClicked" />
+            <StackPanel
+                Margin="8"
+                Spacing="8">
 
-<ToggleButton
-    x:Name="SelectToolButton"
-    Width="110"
-    HorizontalAlignment="Center"
-    Focusable="False"
-    Content="Select"
-    Click="OnToolButtonClicked" />
+                <ToggleButton
+                    x:Name="PanToolButton"
+                    Width="110"
+                    HorizontalAlignment="Center"
+                    Focusable="False"
+                    Content="Hand"
+                    Click="OnToolButtonClicked" />
 
-<ToggleButton
-    x:Name="RectangleToolButton"
-    Width="110"
-    HorizontalAlignment="Center"
-    Focusable="False"
-    Content="Rectangle"
-    Click="OnToolButtonClicked" />
+                <ToggleButton
+                    x:Name="SelectToolButton"
+                    Width="110"
+                    HorizontalAlignment="Center"
+                    Focusable="False"
+                    Content="Select"
+                    Click="OnToolButtonClicked" />
 
-<Button
-    Width="110"
-    HorizontalAlignment="Center"
-    Focusable="False"
-    Content="Delete"
-    Click="OnDeleteClicked" />
-    </StackPanel>
+                <ToggleButton
+                    x:Name="RectangleToolButton"
+                    Width="110"
+                    HorizontalAlignment="Center"
+                    Focusable="False"
+                    Content="Rectangle"
+                    Click="OnToolButtonClicked" />
 
-</Border>
+                <Button
+                    Width="110"
+                    HorizontalAlignment="Center"
+                    Focusable="False"
+                    Content="Delete"
+                    Click="OnDeleteClicked" />
+            </StackPanel>
+        </Border>
+
+        <!-- Canvas area -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="12"
+            Background="White"
+            BorderBrush="#999999"
+            BorderThickness="1">
+
+            <Grid>
+                <TextBlock
+                    x:Name="CanvasPlaceholder"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="24"
+                    Text="Open an image to begin" />
+
+                <Grid>
+                    <Image
+                        x:Name="CanvasImage"
+                        Margin="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Stretch="Uniform"
+                        IsVisible="False" />
+
+                    <Canvas
+                        x:Name="DrawingCanvas"
+                        Background="Transparent"
+                        Focusable="True"
+                        PointerPressed="OnCanvasPointerPressed"
+                        PointerMoved="OnCanvasPointerMoved"
+                        PointerReleased="OnCanvasPointerReleased"
+                        PointerWheelChanged="OnCanvasPointerWheelChanged"
+                        PointerExited="OnCanvasPointerExited" />
+                </Grid>
+            </Grid>
+        </Border>
 
         <!-- Properties panel -->
         <Border
@@ -124,7 +139,10 @@
             BorderBrush="#CCCCCC"
             BorderThickness="1,1,0,0">
 
-            <StackPanel Margin="16" Spacing="10">
+            <StackPanel
+                Margin="16"
+                Spacing="10">
+
                 <TextBlock
                     FontSize="20"
                     FontWeight="DemiBold"
@@ -132,14 +150,12 @@
 
                 <TextBlock Text="Tags" />
 
-                <TextBox
-                    Watermark="Enter tags" />
+                <TextBox Watermark="Enter tags" />
 
                 <Button
                     HorizontalAlignment="Right"
                     Content="Save" />
             </StackPanel>
         </Border>
-
     </Grid>
 </Window>
