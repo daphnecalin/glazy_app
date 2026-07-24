@@ -81,6 +81,10 @@
 			<Grid>
                     <ScrollViewer Margin="0,30,0,0" VerticalScrollBarVisibility="Auto" IsVisible="{Binding IsBoardMode}">
                         <StackPanel Margin="10" Spacing="5">
+                            <TextBlock Margin="0,0,0,0" Text="Board Description" />
+                            <TextBox Watermark="Description" Width="200" HorizontalAlignment="Left" ></TextBox>
+                            <TextBlock Margin="0,0,0,0" Text="Board Creator" />
+                            <TextBox Watermark="Creator" Width="200" HorizontalAlignment="Left" ></TextBox>
                             <Button
                                 Width="100"
                                 HorizontalAlignment="Right"
